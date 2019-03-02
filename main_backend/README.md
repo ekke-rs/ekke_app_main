@@ -1,0 +1,3 @@
+# Ekke Main
+
+The one application to rule them all. This application provides the welcome screen when launching ekke, as well as an overview of available applications, possibility to install apps, reusable ui components...
