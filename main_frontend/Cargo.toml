@@ -18,7 +18,7 @@
 
 [dependencies.web-sys]
 
-	version  = "0.3.4"
+	version  = "0.3.14"
 
 	features = [
 

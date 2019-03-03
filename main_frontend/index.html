@@ -39,7 +39,7 @@
 			to `wasm-bindgen`. You can also customize the name of the global exported
 			here with the `no-modules-global` flag.
 		-->
-		<script src='./pkg/without_a_bundler.js'></script>
+		<script src='/mainui/pkg/without_a_bundler.js'></script>
 
 		<script>
 
@@ -58,7 +58,7 @@
 				// Note that instead of a string here you can also pass in an instance
 				// of `WebAssembly.Module` which allows you to compile your own module.
 				//
-				await wasm_bindgen( './pkg/without_a_bundler_bg.wasm' );
+				await wasm_bindgen( '/mainui/pkg/without_a_bundler_bg.wasm' );
 
 				// And afterwards we can use all the functionality defined in wasm.
 				//
