@@ -18,7 +18,7 @@ fn main()
 {
 	let sys = System::new( "ekke_main" );
 
-	let log = root_logger().new( o!( "thread_name" => "main", "Actor" => "Systemd" ) );
+	let log = root_logger().new( o!( "thread_name" => "main", "Actor" => "MainUi" ) );
 
 	// log_panics::init();
 

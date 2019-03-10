@@ -1,6 +1,7 @@
 use actix             :: { prelude::*                                        };
 use futures_util      :: { future::FutureExt, try_future::TryFutureExt       };
 use slog              :: { Logger, info, o                                   };
+use slog_unwraps      :: { ResultExt                                         };
 use tokio_async_await :: { await                                             };
 use typename          :: { TypeName                                          };
 use libekke::services :: { RegisterApplication, RegisterApplicationResponse  };
@@ -9,7 +10,6 @@ use ekke_io::
 {
 	  IpcMessage
 	, Rpc
-	, ResultExtSlog
 	, RegisterServiceMethod
 	, ConnID
 	, SendRequest
@@ -63,7 +63,7 @@ impl Actor for MainUi
 			let msg = RegisterApplication
 			{
 				conn_id                                       ,
-				app_name: "MainUi".to_string()                ,
+				app_name: "mainui".into()                     ,
 				route   : "/mainui".to_string()               ,
 				services: vec![ "HttpRequest".to_string() ] ,
 			};
@@ -77,7 +77,7 @@ impl Actor for MainUi
 
 					ipc_msg: IpcMessage::new
 					(
-						  "RegisterApplication".to_string()
+						  "RegisterApplication".into()
 						, msg
 						, MessageType::SendRequest
 						, conn_id
