@@ -64,7 +64,7 @@ impl Actor for MainUi
 			{
 				conn_id                                       ,
 				app_name: "mainui".into()                     ,
-				route   : "/mainui".to_string()               ,
+				routes   : vec![ "/mainui".to_string()    ]           ,
 				services: vec![ "HttpRequest".to_string() ] ,
 			};
 
