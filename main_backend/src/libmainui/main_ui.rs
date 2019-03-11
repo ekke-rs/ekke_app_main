@@ -12,7 +12,7 @@ use ekke_io::
 	, Rpc
 	, RegisterServiceMethod
 	, ConnID
-	, SendRequest
+	, IpcRequestOut
 	, MessageType
 };
 
@@ -71,7 +71,7 @@ impl Actor for MainUi
 
 			let response = await!( rpc2.send
 			(
-				SendRequest
+				IpcRequestOut
 				{
 					ipc_peer: ekke_server.recipient(),
 
@@ -79,7 +79,7 @@ impl Actor for MainUi
 					(
 						  "RegisterApplication".into()
 						, msg
-						, MessageType::SendRequest
+						, MessageType::IpcRequestOut
 						, conn_id
 					)
 				}
