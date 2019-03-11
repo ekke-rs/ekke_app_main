@@ -18,16 +18,34 @@ pub mod services
 
 
 
-use crate::services::*;
-use ekke_io::{ IpcMessage, Rpc };
-use actix::Recipient;
+
+use
+{
+	crate   :: { services::*      } ,
+	ekke_io :: { IpcMessage, Rpc  } ,
+	actix   :: { Recipient        } ,
+	slog    :: { Logger, error    } ,
+};
 
 
-pub(crate) fn service_map( rpc: &Rpc, msg: IpcMessage, ipc_peer: Recipient< IpcMessage > )
+pub(crate) fn service_map( rpc: &Rpc, log: Logger, msg: IpcMessage, ipc_peer: Recipient< IpcMessage > )
 {
     match msg.service.as_ref()
     {
-        "HttpRequest" => rpc.deser_into::<HttpRequest>( msg, ipc_peer ),
-        _ =>(),
+      	"HttpRequest" => rpc.deser_into::<HttpRequest>( msg, ipc_peer ),
+      	_             =>
+      	{
+      		let error = format!( "MainUi: Received request for unknown service: {}", &msg.service );
+
+        		error!( &log, "{}", &error );
+
+        		rpc.error_response
+        		(
+        			msg.service ,
+        			error       ,
+        			ipc_peer    ,
+        			msg.conn_id ,
+        		);
+        	}
     }
 }

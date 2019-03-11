@@ -1,6 +1,6 @@
 use actix             :: { prelude::*                                        };
 use futures_util      :: { future::FutureExt, try_future::TryFutureExt       };
-use slog              :: { Logger, info, o                                   };
+use slog              :: { Logger, info, o, error                            };
 use slog_unwraps      :: { ResultExt                                         };
 use tokio_async_await :: { await                                             };
 use typename          :: { TypeName                                          };
@@ -84,11 +84,25 @@ impl Actor for MainUi
 					)
 				}
 
-			)).unwraps( &log );
+			)).unwraps( &log ); // Actix::MailboxError
 
-			let resp: RegisterApplicationResponse = Rpc::deserialize( response.ipc_msg.payload ).unwraps( &log );
 
-			info!( log, "MainUi: Received response for RegisterApplication: {}", resp.response );
+			match response
+			{
+				Ok ( r ) =>
+				{
+					let resp: RegisterApplicationResponse = Rpc::deserialize( r.ipc_msg.payload ).unwraps( &log );
+
+					info!( log, "MainUi: Received response for RegisterApplication: {}", resp.response );
+				},
+
+				Err( e ) =>
+				{
+					error!( log, "MainUi: RegisterApplication failed: {}", e );
+				}
+			}
+
+
 
 			Ok(())
 		};
