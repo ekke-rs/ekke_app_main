@@ -13,7 +13,7 @@ pub use main_ui::
 
 pub mod services
 {
-	pub use crate::main_ui::HttpRequest;
+	pub use libekke::FrontendRequest;
 }
 
 
@@ -32,7 +32,7 @@ pub(crate) fn service_map( rpc: &Rpc, log: Logger, msg: IpcMessage, ipc_peer: Re
 {
     match msg.service.as_ref()
     {
-      	"HttpRequest" => rpc.deser_into::<HttpRequest>( msg, ipc_peer ),
+      	"FrontendRequest" => rpc.deser_into::<FrontendRequest>( msg, ipc_peer ),
       	_             =>
       	{
       		let error = format!( "MainUi: Received request for unknown service: {}", &msg.service );

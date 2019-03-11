@@ -5,6 +5,7 @@ use slog_unwraps      :: { ResultExt                                         };
 use tokio_async_await :: { await                                             };
 use typename          :: { TypeName                                          };
 use libekke::services :: { RegisterApplication, RegisterApplicationResponse  };
+use libekke           :: { FrontendRequest                                   };
 
 use ekke_io::
 {
@@ -19,8 +20,8 @@ use ekke_io::
 use libekke::Ekke;
 
 
-mod     http_request   ;
-pub use http_request::*;
+mod     frontend_request   ;
+pub use frontend_request::*;
 
 
 #[ derive( Debug, Clone, TypeName ) ]
@@ -45,7 +46,7 @@ impl Actor for MainUi
 		let rpc  = Rpc::new( log.new( o!( "Actor" => "Rpc" ) ), crate::service_map ).start();
 		let rpc2 = rpc.clone();
 
-		self.register_service::<HttpRequest>( &rpc, ctx );
+		self.register_service::<FrontendRequest>( &rpc, ctx );
 
 		let program = async move
 		{
@@ -65,7 +66,7 @@ impl Actor for MainUi
 				conn_id                                       ,
 				app_name: "mainui".into()                     ,
 				routes   : vec![ "/mainui".to_string()    ]           ,
-				services: vec![ "HttpRequest".to_string() ] ,
+				services: vec![ "FrontendRequest".to_string() ] ,
 			};
 
 
