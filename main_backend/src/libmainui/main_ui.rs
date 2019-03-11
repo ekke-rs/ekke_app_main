@@ -1,24 +1,5 @@
-use actix             :: { prelude::*                                        };
-use futures_util      :: { future::FutureExt, try_future::TryFutureExt       };
-use slog              :: { Logger, info, o, error                            };
-use slog_unwraps      :: { ResultExt                                         };
-use tokio_async_await :: { await                                             };
-use typename          :: { TypeName                                          };
-use libekke::services :: { RegisterApplication, RegisterApplicationResponse  };
-use libekke           :: { FrontendRequest                                   };
-
-use ekke_io::
-{
-	  IpcMessage
-	, Rpc
-	, RegisterServiceMethod
-	, ConnID
-	, IpcRequestOut
-	, MessageType
-};
-
-use libekke::Ekke;
-
+use crate :: { import::*, services::FrontendRequest };
+use ekke_io::RegisterServiceMethod;
 
 mod     frontend_request   ;
 pub use frontend_request::*;
@@ -70,7 +51,7 @@ impl Actor for MainUi
 			};
 
 
-			let response = await!( rpc2.send
+			let response = awaits!( rpc2.send
 			(
 				IpcRequestOut
 				{

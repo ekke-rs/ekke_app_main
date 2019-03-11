@@ -6,14 +6,14 @@ mod main_ui;
 
 pub use main_ui::
 {
-	  MainUi
+	MainUi
 };
 
 
 
 pub mod services
 {
-	pub use libekke::FrontendRequest;
+	pub use ekke_core::FrontendRequest;
 }
 
 
@@ -21,31 +21,47 @@ pub mod services
 
 use
 {
-	crate   :: { services::*      } ,
-	ekke_io :: { IpcMessage, Rpc  } ,
-	actix   :: { Recipient        } ,
-	slog    :: { Logger, error    } ,
+	crate  :: { services::*, import::*  } ,
 };
 
 
 pub(crate) fn service_map( rpc: &Rpc, log: Logger, msg: IpcMessage, ipc_peer: Recipient< IpcMessage > )
 {
-    match msg.service.as_ref()
-    {
-      	"FrontendRequest" => rpc.deser_into::<FrontendRequest>( msg, ipc_peer ),
-      	_             =>
-      	{
-      		let error = format!( "MainUi: Received request for unknown service: {}", &msg.service );
+	match msg.service.as_ref()
+	{
+		"FrontendRequest" => rpc.deser_into::<FrontendRequest>( msg, ipc_peer ),
+		_             =>
+		{
+			let error = format!( "MainUi: Received request for unknown service: {}", &msg.service );
 
-        		error!( &log, "{}", &error );
+			error!( &log, "{}", &error );
 
-        		rpc.error_response
-        		(
-        			msg.service ,
-        			error       ,
-        			ipc_peer    ,
-        			msg.conn_id ,
-        		);
-        	}
-    }
+			rpc.error_response
+			(
+				msg.service ,
+				error       ,
+				ipc_peer    ,
+				msg.conn_id ,
+			);
+		}
+	}
+}
+
+
+mod import
+{
+	#[ allow( unused_imports ) ]
+	//
+	pub( crate ) use
+	{
+		ekke_io           :: { ConnID, IpcMessage, IpcRequestOut, MessageType, Rpc },
+		ekke_core         :: { BackendResponse, Ekke, ResponseStatus },
+		actix             :: { Actor, Message, Handler, Context, Arbiter, Recipient, Addr                                        },
+		futures_util      :: { future::FutureExt, try_future::TryFutureExt       },
+		slog              :: { Logger, info, o, error                            },
+		slog_unwraps      :: { ResultExt                                         },
+		tokio_async_await :: { await as awaits                                   },
+		typename          :: { TypeName                                          },
+		ekke_core::services :: { RegisterApplication, RegisterApplicationResponse  },
+	};
 }
