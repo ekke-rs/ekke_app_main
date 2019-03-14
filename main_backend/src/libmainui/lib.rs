@@ -56,7 +56,7 @@ mod import
 	{
 		ekke_io           :: { ConnID, IpcMessage, IpcRequestOut, MessageType, Rpc },
 		ekke_core         :: { BackendResponse, Ekke, ResponseStatus },
-		actix             :: { Actor, Message, Handler, Context, Arbiter, Recipient, Addr                                        },
+		actix             :: { Actor, Addr, Arbiter, Context, Handler, Message, Recipient },
 		futures_util      :: { future::FutureExt, try_future::TryFutureExt       },
 		slog              :: { Logger, info, o, error                            },
 		slog_unwraps      :: { ResultExt                                         },

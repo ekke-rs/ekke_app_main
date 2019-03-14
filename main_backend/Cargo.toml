@@ -19,11 +19,11 @@
 
 [dependencies]
 
-	ekke_config = { path = "../../../ekke_config" }
-	ekke_core   = { path = "../../../ekke_core"   }
-	ekke_io     = { path = "../../../ekke_io"     }
+	ekke_config = { path = "../../../ekke_config"                            }
+	ekke_core   = { path = "../../../ekke_core"                              }
+	ekke_io     = { path = "../../../ekke_io",     features = [ "tokio-rt" ] }
 
-	actix             = "0.7.9"
+	actix             = { path = "../../../../actix", features = [ "tokio" ] }
 	clap              = "2.32.0"
 	failure           = "0.1.5"
 	typename          = "0.1.0"
